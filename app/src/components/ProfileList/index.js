@@ -1,32 +1,27 @@
 import React from "react";
+import cn from "classnames";
 
 import style from "./style";
-
-const profiles = [
-  { id: "default", type: "default", name: "Default" },
-  { id: "game", type: "game", name: "Game" },
-  { id: "movie", type: "movie", name: "Movie" },
-  { id: "music", type: "music", name: "Music" },
-  { id: "custom-1", type: "custom", name: "Custom 1" },
-  { id: "custom-1", type: "custom", name: "Custom 1" },
-  { id: "custom-1", type: "custom", name: "Custom 1" },
-  { id: "custom-1", type: "custom", name: "Custom 1" },
-  {
-    id: "demo",
-    type: "custom",
-    name: "Demo Long text Demo Long text Demo Long text Demo Long text Demo Long text ",
-  },
-];
+import { useGetAllProfiles, useSetSelectedProfileId } from "store/profiles";
 
 function ProfileList() {
+  const { allProfiles } = useGetAllProfiles();
+  const { selectedProfileId, setSelectedProfileId } = useSetSelectedProfileId();
+
   return (
     <nav className={style.layout}>
       <h2 className={style.title}>PROFILE LIST</h2>
       <div className={style.profileWrapper}>
         <ul className={style.profileList}>
-          {profiles.map(({ type, id, name }) => (
-            <li key={id} className={style.profileListItem}>
-              <button>
+          {allProfiles.map(({ type, id, name }) => (
+            <li
+              key={id}
+              className={cn({
+                [style.profileListItem]: true,
+                [style.selected]: id === selectedProfileId,
+              })}
+            >
+              <button onClick={() => setSelectedProfileId(id)}>
                 <img
                   className={style.profileIcon}
                   src={`/images/icon_profiles_${type}.svg`}

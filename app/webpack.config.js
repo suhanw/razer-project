@@ -44,6 +44,7 @@ module.exports = {
     extensions: [".js", ".jsx", ".less"],
     alias: {
       components: path.resolve(__dirname, "./src/components"),
+      store: path.resolve(__dirname, "./src/store"),
     },
   },
   ...(isDev && {
