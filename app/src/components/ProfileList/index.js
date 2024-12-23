@@ -31,6 +31,7 @@ function ProfileList() {
   return (
     <nav className={style.layout}>
       <h2 className={style.title}>PROFILE LIST</h2>
+
       <div className={style.profileWrapper}>
         <ul className={style.profileList}>
           {allProfiles.map(({ type, id, name }) => (
@@ -47,7 +48,7 @@ function ProfileList() {
           ))}
         </ul>
 
-        <div className={style.profileListToolbar}>
+        <menu className={style.profileListToolbar}>
           <div className={style.reorderIcons}>
             <button
               className={cn(style.toolbarIcon, {
@@ -84,7 +85,7 @@ function ProfileList() {
               onClick={() => createProfile()}
             />
           </div>
-        </div>
+        </menu>
       </div>
     </nav>
   );
