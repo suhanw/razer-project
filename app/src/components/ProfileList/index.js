@@ -7,7 +7,9 @@ import {
   useGetSelectedProfile,
   useSetSelectedProfileId,
   useUpdateProfileOrder,
+  useCreateProfile,
 } from "store/profiles";
+import { useToggleDeleteProfileDialog } from "store/ui";
 
 // 2. Clicking a profile should select the profile and will be highlighted in green and the right panel will be updated.
 // 3. Move up, move down, and add (+) icon are always shown. If the selected profile is at the most top of the list, move up will be disabled. Same goes if the selected profile is at the most bottom of the list, move down will be disabled.
@@ -23,6 +25,8 @@ function ProfileList() {
     moveProfileUp,
     moveProfileDown,
   } = useUpdateProfileOrder();
+  const { createProfile } = useCreateProfile();
+  const { toggleDeleteProfileDialog } = useToggleDeleteProfileDialog();
 
   return (
     <nav className={style.layout}>
@@ -66,6 +70,7 @@ function ProfileList() {
                 <button
                   className={style.toolbarIcon}
                   style={{ backgroundImage: "url(/images/icon_delete.svg)" }}
+                  onClick={() => toggleDeleteProfileDialog()}
                 />
                 <button
                   className={style.toolbarIcon}
@@ -76,6 +81,7 @@ function ProfileList() {
             <button
               className={style.toolbarIcon}
               style={{ backgroundImage: "url(/images/icon_plus.svg)" }}
+              onClick={() => createProfile()}
             />
           </div>
         </div>

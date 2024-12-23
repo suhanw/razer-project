@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
+// 9. Profile data array would be something like this [{name: 'Default', ...}, {name: 'Game', ...}] but you are given the freedom on what other properties it should have to implement the requirements.
 const profiles = [
   { id: "default", type: "default", name: "Default" },
   { id: "game", type: "game", name: "Game" },
@@ -32,14 +33,25 @@ const profileSlice = createSlice({
     setSelectedProfileId: (state, action) => {
       state.selectedProfileId = action.payload;
     },
+    createProfileSuccess: (state, action) => {
+      state.allProfiles = [...state.allProfiles, action.payload];
+    },
+    deleteProfileSuccess: (state, action) => {
+      state.allProfiles = state.allProfiles.filter(
+        ({ id }) => id !== action.payload
+      );
+    },
   },
 });
 
-export const { getAllProfilesSuccess, setSelectedProfileId } =
-  profileSlice.actions;
-
 export const profileReducer = profileSlice.reducer;
 
+const {
+  getAllProfilesSuccess,
+  setSelectedProfileId,
+  createProfileSuccess,
+  deleteProfileSuccess,
+} = profileSlice.actions;
 
 /**
  * React hooks to expose state data and update methods
@@ -116,5 +128,41 @@ export const useUpdateProfileOrder = function () {
     lastProfileSelected,
     moveProfileUp,
     moveProfileDown,
+  };
+};
+
+export const useCreateProfile = function () {
+  const dispatch = useDispatch();
+  return {
+    createProfile: (
+      profile = {
+        id: `custom-${Date.now()}`,
+        type: "custom",
+        name: "New Profile",
+      }
+    ) => {
+      dispatch(createProfileSuccess(profile));
+      dispatch(setSelectedProfileId(profile.id));
+    },
+  };
+};
+
+export const useDeleteSelectedProfile = function () {
+  const dispatch = useDispatch();
+  const selectedProfileId = useSelector(
+    (state) => state.profiles.selectedProfileId
+  );
+  const allProfiles = useSelector((state) => state.profiles.allProfiles);
+  const selectedIndex = allProfiles.findIndex(
+    ({ id }) => id === selectedProfileId
+  );
+  const alternativeIndex = selectedIndex > 0 ? selectedIndex - 1 : 1;
+  const alternativeProfile = allProfiles[alternativeIndex];
+  return {
+    deleteSelectedProfile: () => {
+      // 6. If a selected profile is deleted, it should automatically select the profile above the deleted profile.
+      dispatch(setSelectedProfileId(alternativeProfile.id));
+      dispatch(deleteProfileSuccess(selectedProfileId));
+    },
   };
 };
