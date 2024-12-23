@@ -11,8 +11,16 @@ import { useToggleDeleteProfileDialog } from "../../store/ui";
 function DeleteProfileDialog() {
   const { selectedProfile } = useGetSelectedProfile();
   const { deleteSelectedProfile } = useDeleteSelectedProfile();
-  const { showDeleteProfileDialog, toggleDeleteProfileDialog } = useToggleDeleteProfileDialog();
+  const { showDeleteProfileDialog, toggleDeleteProfileDialog } =
+    useToggleDeleteProfileDialog();
   const dialogRef = useRef();
+  const buttonRef = useRef();
+
+  useEffect(() => {
+    if (showDeleteProfileDialog) {
+      buttonRef.current.focus();
+    }
+  }, [showDeleteProfileDialog]);
 
   const handleClick = () => {
     toggleDeleteProfileDialog();
@@ -28,7 +36,9 @@ function DeleteProfileDialog() {
     >
       <strong>DELETE PROFILE</strong>
       <div>{selectedProfile.name}</div>
-      <button onClick={handleClick}>DELETE</button>
+      <button onClick={handleClick} ref={buttonRef}>
+        DELETE
+      </button>
     </dialog>
   );
 }
