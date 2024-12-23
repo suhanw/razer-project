@@ -49,7 +49,7 @@ module.exports = {
   ...(isDev && {
     devServer: {
       port: 3000,
-      static: path.resolve(__dirname, "../assets"),
+      static: path.resolve(__dirname, "./public"),
       hot: true,
     },
   }),
