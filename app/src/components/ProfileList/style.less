@@ -1,4 +1,77 @@
+.layout {
+  width: 240px;
+  height: 100vh;
+  flex: 0 0 auto;
+  padding: 20px;
+  background-color: #111111;
+}
+
+.title {
+  margin: 0 0 20px 0;
+  color: #44d62c;
+  font-family: RazerF5;
+  font-size: 20px;
+}
+
+.profile-wrapper {
+  border: 1px solid #5d5d5d;
+}
+
 .profile-list {
-  border: 1px solid blue;
-  flex: 0 0 240px;
+  max-height: 190px;
+  overflow-y: auto;
+}
+
+.profile-list-item {
+  button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px 5px;
+
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+.profile-icon {
+  width: 20px;
+}
+
+.profile-name {
+  margin-left: 5px;
+  display: inline-block;
+  flex: 1 1 auto;
+  color: #ccc;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.profile-list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #707070;
+  background-color: #222;
+}
+
+.toolbar-icon {
+  width: 28px;
+  height: 28px;
+  background-size: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.reorder-icons,
+.crud-icons {
+  display: flex;
+  align-items: center;
 }
