@@ -45,11 +45,11 @@ export const useGetAllProfiles = function () {
   return { allProfiles };
 };
 
-export const useGetSelectedProfile = function () {
-  const selectedProfile = useSelector(
-    (state) => state.profiles.selectedProfile
+export const useGetSelectedProfileId = function () {
+  const selectedProfileId = useSelector(
+    (state) => state.profiles.selectedProfileId
   );
-  return { selectedProfile };
+  return { selectedProfileId };
 };
 
 export const useSetSelectedProfileId = function () {
