@@ -23,27 +23,38 @@
 }
 
 .profile-list-item {
-  button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 5px 10px 5px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px 5px;
+  cursor: pointer;
 
-    cursor: pointer;
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
+  &:before {
+    display: inline-flex;
+    flex: 0 0 20px;
+    height: 20px;
+    content: "";
   }
 
-  &.selected {
-    button {
-      color: #44d62c;
-    }
+  &.default:before {
+    background-image: url(../../../public/images/icon_profiles_default.svg);
   }
-}
+  &.game:before {
+    background-image: url(../../../public/images/icon_profiles_game.svg);
+  }
+  &.movie:before {
+    background-image: url(../../../public/images/icon_profiles_movie.svg);
+  }
+  &.music:before {
+    background-image: url(../../../public/images/icon_profiles_music.svg);
+  }
+  &.custom:before {
+    background-image: url(../../../public/images/icon_profiles_custom.svg);
+  }
 
-.profile-icon {
-  width: 20px;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .profile-name {
@@ -53,6 +64,28 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.profile-list-item.selected {
+  &.default:before {
+    background-image: url(../../../public/images/profile_sel_default.svg);
+  }
+  &.game:before {
+    background-image: url(../../../public/images/profile_sel_game.svg);
+  }
+  &.movie:before {
+    background-image: url(../../../public/images/profile_sel_movie.svg);
+  }
+  &.music:before {
+    background-image: url(../../../public/images/profile_sel_music.svg);
+  }
+  &.custom:before {
+    background-image: url(../../../public/images/profile_sel_custom.svg);
+  }
+
+  .profile-name {
+    color: #44d62c;
+  }
 }
 
 .profile-list-toolbar {

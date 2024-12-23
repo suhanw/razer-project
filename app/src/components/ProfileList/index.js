@@ -14,18 +14,13 @@ function ProfileList() {
       <div className={style.profileWrapper}>
         <ul className={style.profileList}>
           {allProfiles.map(({ type, id, name }) => (
-            <li
-              key={id}
-              className={cn({
-                [style.profileListItem]: true,
-                [style.selected]: id === selectedProfileId,
-              })}
-            >
-              <button onClick={() => setSelectedProfileId(id)}>
-                <img
-                  className={style.profileIcon}
-                  src={`/images/icon_profiles_${type}.svg`}
-                />
+            <li key={id}>
+              <button
+                className={cn(style.profileListItem, style[type], {
+                  [style.selected]: id === selectedProfileId,
+                })}
+                onClick={() => setSelectedProfileId(id)}
+              >
                 <span className={style.profileName}>{name}</span>
               </button>
             </li>
