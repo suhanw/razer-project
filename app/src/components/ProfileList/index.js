@@ -61,14 +61,18 @@ function ProfileList() {
             />
           </div>
           <div className={style.crudIcons}>
-            <button
-              className={style.toolbarIcon}
-              style={{ backgroundImage: "url(/images/icon_delete.svg)" }}
-            />
-            <button
-              className={style.toolbarIcon}
-              style={{ backgroundImage: "url(/images/icon_edit.svg)" }}
-            />
+            {selectedProfile.type === "custom" && (
+              <>
+                <button
+                  className={style.toolbarIcon}
+                  style={{ backgroundImage: "url(/images/icon_delete.svg)" }}
+                />
+                <button
+                  className={style.toolbarIcon}
+                  style={{ backgroundImage: "url(/images/icon_edit.svg)" }}
+                />
+              </>
+            )}
             <button
               className={style.toolbarIcon}
               style={{ backgroundImage: "url(/images/icon_plus.svg)" }}
