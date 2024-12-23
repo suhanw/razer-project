@@ -30,6 +30,7 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: {
+                namedExport: false,
                 localIdentName: "[name]__[local]__[hash:base64:5]", // for CSS Modules
               },
             },
@@ -40,10 +41,11 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: [".js", ".jsx", ".less"],
   },
   ...(isDev && {
     devServer: {
+      port: 3000,
       static: path.resolve(__dirname, "../assets"),
       hot: true,
     },
