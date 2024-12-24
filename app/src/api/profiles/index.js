@@ -28,4 +28,4 @@ const debounce = function (func, wait = 0) {
   };
 };
 
-export const putProfilesApiDebounced = debounce(putProfilesApi, 3000);
+export const autoSaveProfiles = debounce(putProfilesApi, 3000);
