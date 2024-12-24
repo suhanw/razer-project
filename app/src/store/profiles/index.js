@@ -7,6 +7,7 @@ import {
   getSelectedProfileIdFromCache,
   cacheSelectedProfileId,
 } from "cache/profiles";
+import { putProfilesApiDebounced } from "api/profiles";
 
 const initialState = {
   allProfiles: getProfilesFromCache(),
@@ -24,16 +25,19 @@ const profileSlice = createSlice({
     getAllProfilesSuccess: (state, action) => {
       state.allProfiles = action.payload;
       cacheProfiles(state.allProfiles);
+      putProfilesApiDebounced(state.allProfiles);
     },
     createProfileSuccess: (state, action) => {
       state.allProfiles = [...state.allProfiles, action.payload];
       cacheProfiles(state.allProfiles);
+      putProfilesApiDebounced(state.allProfiles);
     },
     deleteProfileSuccess: (state, action) => {
       state.allProfiles = state.allProfiles.filter(
         ({ id }) => id !== action.payload
       );
       cacheProfiles(state.allProfiles);
+      putProfilesApiDebounced(state.allProfiles);
     },
   },
 });

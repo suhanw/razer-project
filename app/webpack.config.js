@@ -46,6 +46,7 @@ module.exports = {
       components: path.resolve(__dirname, "./src/components"),
       store: path.resolve(__dirname, "./src/store"),
       cache: path.resolve(__dirname, "./src/cache"),
+      api: path.resolve(__dirname, "./src/api"),
     },
   },
   ...(isDev && {
