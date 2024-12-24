@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import cn from "classnames";
 
 import style from "./style";
@@ -8,17 +8,19 @@ import {
   useSetSelectedProfileId,
   useUpdateProfileOrder,
   useCreateProfile,
+  useUpdateSelectedProfile,
 } from "store/profiles";
 import { useToggleDeleteProfileDialog } from "store/ui";
 
 // 2. Clicking a profile should select the profile and will be highlighted in green and the right panel will be updated.
 // 3. Move up, move down, and add (+) icon are always shown. If the selected profile is at the most top of the list, move up will be disabled. Same goes if the selected profile is at the most bottom of the list, move down will be disabled.
 // 4. User has 4 default profiles: Default, Game, Movie and Music. Default profiles have their own icons, can be moved up and down, but cannot be renamed or deleted. Hence delete and rename icon should not be shown on the UI if the selected profile is a default profile.
+// 5. User can choose to add a custom profile by clicking the add (+) icon. Custom profile should be named "New Profile", added to the last of the list and should be automatically selected.
+// 7. Rename should be trimmed and do not allow just an empty space for the name.
 
 function ProfileList() {
   const { allProfiles } = useGetAllProfiles();
   const { selectedProfileId, selectedProfile } = useGetSelectedProfile();
-  const { setSelectedProfileId } = useSetSelectedProfileId();
   const {
     firstProfileSelected,
     lastProfileSelected,
@@ -27,6 +29,7 @@ function ProfileList() {
   } = useUpdateProfileOrder();
   const { createProfile } = useCreateProfile();
   const { toggleDeleteProfileDialog } = useToggleDeleteProfileDialog();
+  const [editMode, setEditMode] = useState(false);
 
   return (
     <nav className={style.layout}>
@@ -35,16 +38,15 @@ function ProfileList() {
       <div className={style.profileWrapper}>
         <ul className={style.profileList}>
           {allProfiles.map(({ type, id, name }) => (
-            <li key={id} id={id}>
-              <button
-                className={cn(style.profileListItem, style[type], {
-                  [style.selected]: id === selectedProfileId,
-                })}
-                onClick={() => setSelectedProfileId(id)}
-              >
-                <span className={style.profileName}>{name}</span>
-              </button>
-            </li>
+            <ProfileListItem
+              key={id}
+              id={id}
+              type={type}
+              name={name}
+              isSelected={id === selectedProfileId}
+              editMode={editMode}
+              setEditMode={setEditMode}
+            />
           ))}
         </ul>
 
@@ -76,6 +78,7 @@ function ProfileList() {
                 <button
                   className={style.toolbarIcon}
                   style={{ backgroundImage: "url(/images/icon_edit.svg)" }}
+                  onClick={() => setEditMode((editMode) => !editMode)}
                 />
               </>
             )}
@@ -96,6 +99,62 @@ function ProfileList() {
         </menu>
       </div>
     </nav>
+  );
+}
+
+function ProfileListItem({ isSelected, editMode, setEditMode, ...profile }) {
+  const { id, type, name } = profile;
+  const [profileName, setProfileName] = useState(name);
+  const { setSelectedProfileId } = useSetSelectedProfileId();
+  const { updateSelectedProfile } = useUpdateSelectedProfile();
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (isSelected && editMode) {
+      inputRef.current?.select();
+    }
+  }, [isSelected && editMode]);
+
+  useEffect(() => {
+    if (profileName && name !== profileName) {
+      updateSelectedProfile({
+        ...profile,
+        name: profileName,
+      });
+    }
+  }, [profileName]);
+
+  const disableEditMode = () => setEditMode(false);
+
+  if (isSelected && editMode) {
+    return (
+      <li id={id}>
+        <form onSubmit={disableEditMode}>
+          <input
+            ref={inputRef}
+            type="text"
+            value={profileName}
+            placeholder="Enter Profile Name"
+            onChange={(e) => setProfileName(e.target.value)}
+            onBlur={disableEditMode}
+          />
+          <button type="submit" />
+        </form>
+      </li>
+    );
+  }
+
+  return (
+    <li id={id}>
+      <button
+        className={cn(style.profileListItem, style[type], {
+          [style.selected]: isSelected,
+        })}
+        onClick={() => setSelectedProfileId(id)}
+      >
+        <span className={style.profileName}>{name}</span>
+      </button>
+    </li>
   );
 }
 

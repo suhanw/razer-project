@@ -149,6 +149,24 @@ export const useCreateProfile = function () {
   };
 };
 
+export const useUpdateSelectedProfile = function () {
+  const dispatch = useDispatch();
+  const selectedProfileId = useSelector(
+    (state) => state.profiles.selectedProfileId
+  );
+  const allProfiles = useSelector((state) => state.profiles.allProfiles);
+  const selectedIndex = allProfiles.findIndex(
+    ({ id }) => id === selectedProfileId
+  );
+  return {
+    updateSelectedProfile: (updatedProfile) => {
+      const updatedProfiles = [...allProfiles];
+      updatedProfiles[selectedIndex] = updatedProfile;
+      dispatch(getAllProfilesSuccess(updatedProfiles));
+    },
+  };
+};
+
 export const useDeleteSelectedProfile = function () {
   const dispatch = useDispatch();
   const selectedProfileId = useSelector(
