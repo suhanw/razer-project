@@ -17,6 +17,7 @@ function DeleteProfileDialog() {
 
   useEffect(() => {
     if (showDeleteProfileDialog) {
+      // auto focus on delete button when dialog is open
       buttonRef.current?.focus();
     }
   }, [showDeleteProfileDialog]);

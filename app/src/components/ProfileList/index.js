@@ -160,6 +160,7 @@ function ProfileListToolbar({ profileType, setEditMode }) {
           style={{ backgroundImage: "url(/images/icon_plus.svg)" }}
           onClick={() =>
             createProfile((profileId) => {
+              // auto scroll to new profile created
               setTimeout(() => {
                 document.querySelector(`#${profileId}`)?.scrollIntoView?.({
                   behavior: "smooth",
