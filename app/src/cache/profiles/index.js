@@ -10,7 +10,7 @@ const DEFAULT_PROFILES = [
 
 const DEFAULT_SELECTED_PROFILE_ID = "default";
 
-export const getProfilesFromCache = () => {
+export const getProfilesFromCache = function () {
   let profiles;
   try {
     profiles = JSON.parse(localStorage.getItem("profiles"));
@@ -26,7 +26,7 @@ export const getProfilesFromCache = () => {
   return profiles;
 };
 
-export const getSelectedProfileIdFromCache = () => {
+export const getSelectedProfileIdFromCache = function () {
   let selectedProfileId = localStorage.getItem("selectedProfileId");
   if (!selectedProfileId) {
     selectedProfileId = DEFAULT_SELECTED_PROFILE_ID;
@@ -35,10 +35,10 @@ export const getSelectedProfileIdFromCache = () => {
   return selectedProfileId;
 };
 
-export const cacheProfiles = (profiles) => {
+export const cacheProfiles = function (profiles) {
   localStorage.setItem("profiles", JSON.stringify(profiles));
 };
 
-export const cacheSelectedProfileId = (profileId) => {
+export const cacheSelectedProfileId = function (profileId) {
   localStorage.setItem("selectedProfileId", profileId);
 };
