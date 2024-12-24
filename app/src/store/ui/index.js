@@ -10,7 +10,10 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     toggleDeleteProfileDialog: (state, action) => {
-      state.showDeleteProfileDialog = !state.showDeleteProfileDialog;
+      state.showDeleteProfileDialog =
+        typeof action.payload !== "undefined"
+          ? action.payload
+          : !state.showDeleteProfileDialog;
     },
   },
 });
@@ -29,7 +32,7 @@ export const useToggleDeleteProfileDialog = function () {
     (state) => state.ui.showDeleteProfileDialog
   );
   return {
-    toggleDeleteProfileDialog: () => dispatch(toggleDeleteProfileDialog()),
+    toggleDeleteProfileDialog: (bool) => dispatch(toggleDeleteProfileDialog(bool)),
     showDeleteProfileDialog,
   };
 };

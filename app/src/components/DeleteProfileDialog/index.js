@@ -18,12 +18,12 @@ function DeleteProfileDialog() {
 
   useEffect(() => {
     if (showDeleteProfileDialog) {
-      buttonRef.current.focus();
+      buttonRef.current?.focus();
     }
   }, [showDeleteProfileDialog]);
 
   const handleClick = () => {
-    toggleDeleteProfileDialog();
+    toggleDeleteProfileDialog(false);
     deleteSelectedProfile();
   };
 
@@ -36,7 +36,11 @@ function DeleteProfileDialog() {
     >
       <strong>DELETE PROFILE</strong>
       <div>{selectedProfile.name}</div>
-      <button onClick={handleClick} ref={buttonRef}>
+      <button
+        ref={buttonRef}
+        onClick={handleClick}
+        onBlur={() => toggleDeleteProfileDialog(false)}
+      >
         DELETE
       </button>
     </dialog>
