@@ -1,45 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
-// 9. Profile data array would be something like this [{name: 'Default', ...}, {name: 'Game', ...}] but you are given the freedom on what other properties it should have to implement the requirements.
-const profiles = [
-  { id: "default", type: "default", name: "Default" },
-  { id: "game", type: "game", name: "Game" },
-  { id: "movie", type: "movie", name: "Movie" },
-  { id: "music", type: "music", name: "Music" },
-  { id: "custom-1", type: "custom", name: "Custom 1" },
-  { id: "custom-2", type: "custom", name: "Custom 1" },
-  { id: "custom-3", type: "custom", name: "Custom 1" },
-  { id: "custom-4", type: "custom", name: "Custom 1" },
-  {
-    id: "demo",
-    type: "custom",
-    name: "Demo Long text Demo Long text Demo Long text Demo Long text Demo Long text ",
-  },
-];
+import {
+  getProfilesFromCache,
+  cacheProfiles,
+  getSelectedProfileIdFromCache,
+  cacheSelectedProfileId,
+} from "cache/profiles";
 
 const initialState = {
-  allProfiles: profiles,
-  selectedProfileId: "default",
+  allProfiles: getProfilesFromCache(),
+  selectedProfileId: getSelectedProfileIdFromCache(),
 };
 
 const profileSlice = createSlice({
   name: "profiles",
   initialState,
   reducers: {
-    getAllProfilesSuccess: (state, action) => {
-      state.allProfiles = action.payload;
-    },
     setSelectedProfileId: (state, action) => {
       state.selectedProfileId = action.payload;
+      cacheSelectedProfileId(state.selectedProfileId);
+    },
+    getAllProfilesSuccess: (state, action) => {
+      state.allProfiles = action.payload;
+      cacheProfiles(state.allProfiles);
     },
     createProfileSuccess: (state, action) => {
       state.allProfiles = [...state.allProfiles, action.payload];
+      cacheProfiles(state.allProfiles);
     },
     deleteProfileSuccess: (state, action) => {
       state.allProfiles = state.allProfiles.filter(
         ({ id }) => id !== action.payload
       );
+      cacheProfiles(state.allProfiles);
     },
   },
 });
