@@ -59,6 +59,7 @@ function ProfileListItem({ isSelected, editMode, setEditMode, ...profile }) {
   const inputRef = useRef();
 
   useEffect(() => {
+    // auto focus on input in edit mode
     if (isSelected && editMode) {
       inputRef.current?.select();
     }
