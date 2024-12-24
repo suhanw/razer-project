@@ -135,6 +135,7 @@ export const useCreateProfile = function () {
   const dispatch = useDispatch();
   return {
     createProfile: (
+      callback,
       profile = {
         id: `custom-${Date.now()}`,
         type: "custom",
@@ -143,6 +144,7 @@ export const useCreateProfile = function () {
     ) => {
       dispatch(createProfileSuccess(profile));
       dispatch(setSelectedProfileId(profile.id));
+      callback?.(profile.id);
     },
   };
 };

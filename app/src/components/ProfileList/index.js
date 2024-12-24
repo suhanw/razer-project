@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import cn from "classnames";
 
 import style from "./style";
@@ -35,7 +35,7 @@ function ProfileList() {
       <div className={style.profileWrapper}>
         <ul className={style.profileList}>
           {allProfiles.map(({ type, id, name }) => (
-            <li key={id}>
+            <li key={id} id={id}>
               <button
                 className={cn(style.profileListItem, style[type], {
                   [style.selected]: id === selectedProfileId,
@@ -82,7 +82,15 @@ function ProfileList() {
             <button
               className={style.toolbarIcon}
               style={{ backgroundImage: "url(/images/icon_plus.svg)" }}
-              onClick={() => createProfile()}
+              onClick={() =>
+                createProfile((profileId) => {
+                  setTimeout(() => {
+                    document.querySelector(`#${profileId}`)?.scrollIntoView?.({
+                      behavior: "smooth",
+                    });
+                  });
+                })
+              }
             />
           </div>
         </menu>
