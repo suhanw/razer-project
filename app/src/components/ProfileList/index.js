@@ -129,8 +129,12 @@ function ProfileListItem({ isSelected, editMode, setEditMode, ...profile }) {
   if (isSelected && editMode) {
     return (
       <li id={id}>
-        <form onSubmit={disableEditMode}>
+        <form
+          onSubmit={disableEditMode}
+          className={cn(style.profileListItem, style[type])}
+        >
           <input
+            className={style.profileEditMode}
             ref={inputRef}
             type="text"
             value={profileName}
