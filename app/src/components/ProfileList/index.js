@@ -20,15 +20,7 @@ import { useToggleDeleteProfileDialog } from "store/ui";
 
 function ProfileList() {
   const { allProfiles } = useGetAllProfiles();
-  const { selectedProfileId, selectedProfile } = useGetSelectedProfile();
-  const {
-    firstProfileSelected,
-    lastProfileSelected,
-    moveProfileUp,
-    moveProfileDown,
-  } = useUpdateProfileOrder();
-  const { createProfile } = useCreateProfile();
-  const { toggleDeleteProfileDialog } = useToggleDeleteProfileDialog();
+  const { selectedProfile } = useGetSelectedProfile();
   const [editMode, setEditMode] = useState(false);
 
   return (
@@ -43,60 +35,17 @@ function ProfileList() {
               id={id}
               type={type}
               name={name}
-              isSelected={id === selectedProfileId}
+              isSelected={id === selectedProfile.id}
               editMode={editMode}
               setEditMode={setEditMode}
             />
           ))}
         </ul>
 
-        <menu className={style.profileListToolbar}>
-          <div className={style.reorderIcons}>
-            <button
-              className={cn(style.toolbarIcon, {
-                [style.disabled]: firstProfileSelected,
-              })}
-              style={{ backgroundImage: "url(/images/icon_arrow_up.svg)" }}
-              onClick={moveProfileUp}
-            />
-            <button
-              className={cn(style.toolbarIcon, {
-                [style.disabled]: lastProfileSelected,
-              })}
-              style={{ backgroundImage: "url(/images/icon_arrow_down.svg)" }}
-              onClick={moveProfileDown}
-            />
-          </div>
-          <div className={style.crudIcons}>
-            {selectedProfile.type === "custom" && (
-              <>
-                <button
-                  className={style.toolbarIcon}
-                  style={{ backgroundImage: "url(/images/icon_delete.svg)" }}
-                  onClick={() => toggleDeleteProfileDialog()}
-                />
-                <button
-                  className={style.toolbarIcon}
-                  style={{ backgroundImage: "url(/images/icon_edit.svg)" }}
-                  onClick={() => setEditMode((editMode) => !editMode)}
-                />
-              </>
-            )}
-            <button
-              className={style.toolbarIcon}
-              style={{ backgroundImage: "url(/images/icon_plus.svg)" }}
-              onClick={() =>
-                createProfile((profileId) => {
-                  setTimeout(() => {
-                    document.querySelector(`#${profileId}`)?.scrollIntoView?.({
-                      behavior: "smooth",
-                    });
-                  });
-                })
-              }
-            />
-          </div>
-        </menu>
+        <ProfileListToolbar
+          profileType={selectedProfile.type}
+          setEditMode={setEditMode}
+        />
       </div>
     </nav>
   );
@@ -159,6 +108,67 @@ function ProfileListItem({ isSelected, editMode, setEditMode, ...profile }) {
         <span className={style.profileName}>{name}</span>
       </button>
     </li>
+  );
+}
+
+function ProfileListToolbar({ profileType, setEditMode }) {
+  const {
+    firstProfileSelected,
+    lastProfileSelected,
+    moveProfileUp,
+    moveProfileDown,
+  } = useUpdateProfileOrder();
+  const { createProfile } = useCreateProfile();
+  const { toggleDeleteProfileDialog } = useToggleDeleteProfileDialog();
+
+  return (
+    <menu className={style.profileListToolbar}>
+      <div className={style.reorderIcons}>
+        <button
+          className={cn(style.toolbarIcon, {
+            [style.disabled]: firstProfileSelected,
+          })}
+          style={{ backgroundImage: "url(/images/icon_arrow_up.svg)" }}
+          onClick={moveProfileUp}
+        />
+        <button
+          className={cn(style.toolbarIcon, {
+            [style.disabled]: lastProfileSelected,
+          })}
+          style={{ backgroundImage: "url(/images/icon_arrow_down.svg)" }}
+          onClick={moveProfileDown}
+        />
+      </div>
+      <div className={style.crudIcons}>
+        {profileType === "custom" && (
+          <>
+            <button
+              className={style.toolbarIcon}
+              style={{ backgroundImage: "url(/images/icon_delete.svg)" }}
+              onClick={() => toggleDeleteProfileDialog()}
+            />
+            <button
+              className={style.toolbarIcon}
+              style={{ backgroundImage: "url(/images/icon_edit.svg)" }}
+              onClick={() => setEditMode((editMode) => !editMode)}
+            />
+          </>
+        )}
+        <button
+          className={style.toolbarIcon}
+          style={{ backgroundImage: "url(/images/icon_plus.svg)" }}
+          onClick={() =>
+            createProfile((profileId) => {
+              setTimeout(() => {
+                document.querySelector(`#${profileId}`)?.scrollIntoView?.({
+                  behavior: "smooth",
+                });
+              });
+            })
+          }
+        />
+      </div>
+    </menu>
   );
 }
 

@@ -13,7 +13,6 @@ function DeleteProfileDialog() {
   const { deleteSelectedProfile } = useDeleteSelectedProfile();
   const { showDeleteProfileDialog, toggleDeleteProfileDialog } =
     useToggleDeleteProfileDialog();
-  const dialogRef = useRef();
   const buttonRef = useRef();
 
   useEffect(() => {
@@ -22,14 +21,8 @@ function DeleteProfileDialog() {
     }
   }, [showDeleteProfileDialog]);
 
-  const handleClick = () => {
-    toggleDeleteProfileDialog(false);
-    deleteSelectedProfile();
-  };
-
   return (
     <dialog
-      ref={dialogRef}
       className={cn(style.dialog, {
         [style.show]: showDeleteProfileDialog,
       })}
@@ -38,7 +31,10 @@ function DeleteProfileDialog() {
       <div>{selectedProfile.name}</div>
       <button
         ref={buttonRef}
-        onClick={handleClick}
+        onClick={() => {
+          toggleDeleteProfileDialog(false);
+          deleteSelectedProfile();
+        }}
         onBlur={() => toggleDeleteProfileDialog(false)}
       >
         DELETE
